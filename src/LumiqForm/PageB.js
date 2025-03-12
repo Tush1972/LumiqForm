@@ -61,10 +61,7 @@ const RegistrationB = () => {
                 </div>
                 <div className="time-slots">
                     {timeSlots.map((time) => (
-                    <button key={time}
-                    className={`time-btn ${selectedTime === time ? "selected" : ""}`}
-                    onClick={() => setSelectedTime(time)}>{time}
-                    </button>
+                    <button key={time} className={`time-btn ${selectedTime === time ? "selected" : ""}`} onClick={() => setSelectedTime(time)}>{time} </button>
                     ))}
                     <p>You selected: <strong>{selectedDate.toDateString()}</strong> at <strong>{selectedTime}</strong></p>
                 </div>
