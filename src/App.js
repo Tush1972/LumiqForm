@@ -7,8 +7,6 @@ import RegistrationB from './LumiqForm/PageB';
 function App() {
   return (
     <div>
-      {/* <Registration/> */}
-      {/* <RegistrationB/> */}
       <Router>
       <Routes>
         <Route path="/Registration" element={<Registration/>} />
