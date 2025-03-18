@@ -9,7 +9,7 @@ function App() {
     <div>
       <Router>
       <Routes>
-        <Route path="/Registration" element={<Registration/>} />
+        <Route path="/" element={<Registration/>} />
         <Route path="/RegistrationB" element={<RegistrationB />} />
       </Routes>
     </Router>

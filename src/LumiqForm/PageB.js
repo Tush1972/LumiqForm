@@ -3,6 +3,7 @@ import './pageB.css';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 
 const RegistrationB = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -12,18 +13,34 @@ const RegistrationB = () => {
 
     const navigate = useNavigate();
     const handleNext = () => {
-    navigate("/Registration");
+    navigate("/");
   };
 
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      department: "",
+      procedure: "",
+    },
+    onSubmit: (values) => {
+      const formData = {
+        ...values,
+        appointmentDate: selectedDate.toDateString(),
+        appointmentTime: selectedTime,
+      };
+      console.log("Form Submitted: ", formData);
+      alert("Appointment booked successfully!");
+    },
+  });
     
   return (
-    <form className='form-container'>
+    <form className='form-container' onSubmit={formik.handleSubmit} >
         <div className='bg'>
             <div>
                 <label><strong>Email</strong></label>
             </div>
             <div className='email-section'>
-                <input type='email' placeholder='Enter Your Email' className='email-field'/>
+                <input type='email' placeholder='Enter Your Email' className='email-field' required {...formik.getFieldProps("email")}   />
                 <br/>
                 <p className='email-para'>example@gmail.com</p>
             </div>
@@ -42,12 +59,12 @@ const RegistrationB = () => {
             <div className='radio-section'>
                 <label><strong>Which department would you like to get an appointment for?</strong></label>
                 <br/>
-                <input type='text' className='email-field'/>
+                <input type='text' className='email-field' {...formik.getFieldProps("department")} required />
             </div>
             <div className='procedure-section'>
                 <label className='procedure-dropbox'><strong>Which procedure do you want to make an appointment for?</strong></label>
                 <br/>
-                <select className='procedure-dropbox'><option>Select</option>
+                <select className='procedure-dropbox' {...formik.getFieldProps("procedure")} required><option>Select</option>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -57,18 +74,18 @@ const RegistrationB = () => {
             
                 <label><strong>Preferred Appointment Date</strong></label>
             <div className='calendar-section'>   
-                <div><Calendar selected={selectedDate} onChange={(date => setSelectedDate(date))}/>
+                <div><Calendar selected={selectedDate} required onChange={(date => setSelectedDate(date))}/>
                 </div>
                 <div className="time-slots">
                     {timeSlots.map((time) => (
-                    <button key={time} className={`time-btn ${selectedTime === time ? "selected" : ""}`} onClick={() => setSelectedTime(time)}>{time} </button>
+                    <button key={time} required className={`time-btn ${selectedTime === time ? "selected" : ""}`} onClick={() => setSelectedTime(time)}>{time} </button>
                     ))}
                     <p>You selected: <strong>{selectedDate.toDateString()}</strong> at <strong>{selectedTime}</strong></p>
                 </div>
             </div>
             <div className='button-section'>
                 <button className='btn' onClick={handleNext}>Back</button>
-                <button className='btn'>Submit</button>
+                <button className='btn' >Submit</button>
             </div>
             </div>
     </form>

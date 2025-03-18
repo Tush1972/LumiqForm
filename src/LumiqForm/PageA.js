@@ -1,16 +1,45 @@
 import React from 'react'
 import './pageA.css';
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const Registration = () => {
 
   const navigate = useNavigate();
-  const handleNext = () => {
-    navigate("/RegistrationB");
-  };
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      day: "",
+      month: "",
+      year: "",
+      gender: "",
+      phoneNumber: "",
+      address: "",
+      street1: "",
+      city: "",
+      state: "",
+      postalCode: "",
+    },
+    // validationSchema,
+    onSubmit: (values) => {
+      console.log("Form Submitted:", values);
+      navigate("/RegistrationB");
+    },
+  });
+
+  const titles = ["Mr.", "Mrs.", "Ms."];
+
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
   return (
-    <form className='form-container'>
+    <form className='form-container'onSubmit={formik.handleSubmit}>
     <div className='bg'>
       <div>
           <div className='background'>
@@ -33,67 +62,70 @@ const Registration = () => {
       <div className='form'>
         <label><strong>Name</strong><span className='star'>*</span></label>
         <div className='name-section'>
-          <select className='name-textfield'><option>Select Title</option>
-            <option>Mr.</option>
-            <option>Mrs.</option>
-          </select>
-          <input type='text' placeholder='First Name' className='name-textfield' />          
-          <input type='text' placeholder='Middle Name' className='name-textfield' />
-          <input type='text' placeholder='Last Name' className='name-lastname' />
+        <select {...formik.getFieldProps("title")} name="title" className='name-textfield'>
+          <option value="">Select Title</option>
+          {titles.map((title) => (
+            <option key={title} value={title}>
+              {title}
+            </option>
+          ))}
+        </select>
+          <input required type='text' placeholder='First Name' className='name-textfield' {...formik.getFieldProps("firstName")} />          
+          <input required type='text' placeholder='Middle Name' className='name-textfield' {...formik.getFieldProps("middleName")} />
+          <input required type='text' placeholder='Last Name' className='name-lastname' {...formik.getFieldProps("lastName")} />
         </div>
       </div>
       <div className='form'>
         <label><strong>Date Of Birth</strong><span className='star'>*</span></label>
         <div className='dob-section'>
-          <input type='number' placeholder='Day' className='date-field'/>
-          <select className='date-field'><option>Select Month</option>
-            <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option><option>May</option><option>Jun</option>
-            <option>Jul</option><option>Aug</option><option>Sep</option><option>Oct</option><option>Nov</option><option>Dev</option>
+          <input required type='number' placeholder='Day' className='date-field' {...formik.getFieldProps("day")} />
+          <select className='date-field' {...formik.getFieldProps("month")} ><option value = " ">Select Month</option>
+            {months.map((months) => (
+              <option key={months} value={months}>
+                {months}
+              </option>
+            ))}
           </select>
-          <input type='number' placeholder='Year' className='date-year'/>
+          <input required type='number' placeholder='Year' className='date-year' {...formik.getFieldProps("year")} />
         </div>
       </div>
       <div className='form'>
         <label className='gender'><strong>Gender</strong></label>
         <label><strong>Phone Number</strong></label>
         <div className='gender-section'>
-          <select className='gender-field'><option>Select Gender</option>
+          <select className='gender-field' {...formik.getFieldProps("gender")} ><option>Select Gender</option>
             <option>Male</option><option>Female</option><option>Third Gender</option>
           </select>
-          <input type='number' placeholder='Phone Number' className='phone-field'/>
+          <input required type='number' placeholder='Phone Number' className='phone-field' {...formik.getFieldProps("phoneNumber")} />
         </div>
       </div>
       <div>
         <label><strong>Address</strong></label>
       </div>
       <div>
-        <input type='text' className='address-field'/>
+        <input required type='text' className='address-field' {...formik.getFieldProps("address")} />
       </div>
       <div>
         <label>Street Address</label>
       </div>
       <div>
-        <input type='text' className='address-field'/>
-      </div>
-      <div>
-        <label>Street Address Line-2</label>
-      </div>
-      <div className='gender-section'>
-        <input type='text' className='gender-field'/>
-        <input type='text' className='phone-field'/>
+        <input required type='text' className='address-field' {...formik.getFieldProps("street1")} />
       </div>
       <div>
         <label className='city'>City</label>
         <label>State</label>
       </div>
-      <div>
-        <input type='text' className='address-field'/>
+      <div className='gender-section'>
+        <input required type='text' className='gender-field' {...formik.getFieldProps("city")} />
+        <input required type='text' className='phone-field' {...formik.getFieldProps("state")}/>
       </div>
       <div className='address'>
         <label>Postal/Zip Code</label>
+      <br/>
+        <input required type='text' className='gender-field' {...formik.getFieldProps("postalCode")} />
       </div>
       <div className='button'>
-        <button className='btn' onClick={handleNext}>Next</button>
+        <button className='btn'>Next</button>
       </div>
       </div>
     </form>
